@@ -19,11 +19,20 @@ class _ChooseAreaState extends State<ChooseArea> {
     WorldTime(location: 'Dhaka', flag: 'bd.png', url: 'Asia/Dhaka'),
     WorldTime(location: 'Kathmandu', flag: 'np.png', url: 'Asia/Kathmandu'),
     WorldTime(location: 'Kolkata', flag: 'in.png', url: 'Asia/Kolkata'),
-    WorldTime(location: 'New Delhi', flag: 'in.png', url: 'Asia/New_Delhi'),
+    WorldTime(location: 'New Delhi', flag: 'in.png', url: 'Asia/Dili'),
     WorldTime(location: 'Karachi', flag: 'pk.png', url: 'Asia/Karachi'),
   ];
-
-
+  void updateTime(index) async
+  {
+    WorldTime instance = locations[index];
+    await instance.getTime();
+    Navigator.pop(context, {
+      'location': instance.location,
+      'flag': instance.flag,
+      'time': instance.time,
+      'isDaytime': instance.isDaytime
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +53,7 @@ class _ChooseAreaState extends State<ChooseArea> {
             child: Card(
               child: ListTile(
                 onTap: () {
-                  Navigator.pop(context, {
-                    'location': locations[index].location,
-                    'flag': locations[index].flag,
-                    'url': locations[index].url,
-                  });
+                  updateTime(index);
                 },
                 title: Text(locations[index].location),
                 leading: CircleAvatar(
